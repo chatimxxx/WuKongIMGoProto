@@ -6,8 +6,8 @@ import (
 	"github.com/pkg/errors"
 )
 
-// SendackPacket 发送回执包
-type SendackPacket struct {
+// SendAckPacket 发送回执包
+type SendAckPacket struct {
 	Framer
 	MessageID   int64      // 消息ID（全局唯一）
 	MessageSeq  uint32     // 消息序列号（用户唯一，有序）
@@ -17,16 +17,16 @@ type SendackPacket struct {
 }
 
 // GetPacketType 包类型
-func (s *SendackPacket) GetFrameType() FrameType {
+func (s *SendAckPacket) GetFrameType() FrameType {
 	return SENDACK
 }
-func (s *SendackPacket) String() string {
+func (s *SendAckPacket) String() string {
 	return fmt.Sprintf("MessageSeq:%d MessageId:%d ReasonCode:%s", s.MessageSeq, s.MessageID, s.ReasonCode)
 }
 
 func decodeSendack(frame Frame, data []byte, version uint8) (Frame, error) {
 	dec := NewDecoder(data)
-	sendackPacket := &SendackPacket{}
+	sendackPacket := &SendAckPacket{}
 	sendackPacket.Framer = frame.(Framer)
 	var err error
 
@@ -56,7 +56,7 @@ func decodeSendack(frame Frame, data []byte, version uint8) (Frame, error) {
 	return sendackPacket, err
 }
 
-func encodeSendack(sendackPacket *SendackPacket, enc *Encoder, version uint8) error {
+func encodeSendAck(sendackPacket *SendAckPacket, enc *Encoder, version uint8) error {
 	// 消息唯一ID
 	enc.WriteInt64(sendackPacket.MessageID)
 	// clientSeq
@@ -68,7 +68,7 @@ func encodeSendack(sendackPacket *SendackPacket, enc *Encoder, version uint8) er
 	return nil
 }
 
-func encodeSendackSize(packet *SendackPacket, version uint8) int {
+func encodeSendackSize(packet *SendAckPacket, version uint8) int {
 
 	return MessageIDByteSize + ClientSeqByteSize + MessageSeqByteSize + ReasonCodeByteSize
 }

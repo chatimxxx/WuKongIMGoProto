@@ -66,7 +66,7 @@ func (d *Decoder) Len() int {
 // Uint8 Uint8
 func (d *Decoder) Uint8() (uint8, error) {
 	if d.offset+1 > len(d.p) {
-		return 0, fmt.Errorf("Decoder couldn't read expect bytes %d of %d", d.offset+1, len(d.p))
+		return 0, fmt.Errorf("decoder couldn't read expect bytes %d of %d", d.offset+1, len(d.p))
 	}
 	b := d.p[d.offset]
 	d.offset += 1
@@ -76,7 +76,7 @@ func (d *Decoder) Uint8() (uint8, error) {
 // Int16 Int16
 func (d *Decoder) Int16() (int16, error) {
 	if d.offset+2 > len(d.p) {
-		return 0, fmt.Errorf("Decoder couldn't read expect bytes %d of %d", d.offset+2, len(d.p))
+		return 0, fmt.Errorf("decoder couldn't read expect bytes %d of %d", d.offset+2, len(d.p))
 	}
 	b := d.p[d.offset : d.offset+2]
 	d.offset += 2
@@ -95,7 +95,7 @@ func (d *Decoder) Uint16() (uint16, error) {
 // Bytes Bytes
 func (d *Decoder) Bytes(num int) ([]byte, error) {
 	if d.offset+num > len(d.p) {
-		return nil, fmt.Errorf("Decoder couldn't read expect bytes %d of %d", d.offset+num, len(d.p))
+		return nil, fmt.Errorf("decoder couldn't read expect bytes %d of %d", d.offset+num, len(d.p))
 	}
 	b := d.p[d.offset : d.offset+num]
 	d.offset += num
@@ -106,7 +106,7 @@ func (d *Decoder) Bytes(num int) ([]byte, error) {
 // Int64 Int64
 func (d *Decoder) Int64() (int64, error) {
 	if d.offset+8 > len(d.p) {
-		return 0, fmt.Errorf("Decoder couldn't read expect bytes %d of %d", d.offset+8, len(d.p))
+		return 0, fmt.Errorf("decoder couldn't read expect bytes %d of %d", d.offset+8, len(d.p))
 	}
 	b := d.p[d.offset : d.offset+8]
 	d.offset += 8
@@ -116,7 +116,7 @@ func (d *Decoder) Int64() (int64, error) {
 // Uint64 Uint64
 func (d *Decoder) Uint64() (uint64, error) {
 	if d.offset+8 > len(d.p) {
-		return 0, fmt.Errorf("Decoder couldn't read expect bytes %d of %d", d.offset+8, len(d.p))
+		return 0, fmt.Errorf("decoder couldn't read expect bytes %d of %d", d.offset+8, len(d.p))
 	}
 	b := d.p[d.offset : d.offset+8]
 	d.offset += 8
@@ -126,7 +126,7 @@ func (d *Decoder) Uint64() (uint64, error) {
 // Int32 Int32
 func (d *Decoder) Int32() (int32, error) {
 	if d.offset+4 > len(d.p) {
-		return 0, fmt.Errorf("Decoder couldn't read expect bytes %d of %d", d.offset+4, len(d.p))
+		return 0, fmt.Errorf("decoder couldn't read expect bytes %d of %d", d.offset+4, len(d.p))
 	}
 	b := d.p[d.offset : d.offset+4]
 	d.offset += 4
@@ -170,7 +170,7 @@ func (d *Decoder) Binary() ([]byte, error) {
 
 	}
 	if d.offset+int(size) > len(d.p) {
-		return nil, fmt.Errorf("Decoder couldn't read expect bytes %d of %d", d.offset+int(size), len(d.p))
+		return nil, fmt.Errorf("decoder couldn't read expect bytes %d of %d", d.offset+int(size), len(d.p))
 	}
 	b := d.p[d.offset : d.offset+int(size)]
 	d.offset += int(size)

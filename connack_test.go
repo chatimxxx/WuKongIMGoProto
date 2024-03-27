@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestConnackEncodeAndDecode(t *testing.T) {
+func TestConnAckEncodeAndDecode(t *testing.T) {
 	packet := &ConnackPacket{
 		TimeDiff:      12345,
 		ReasonCode:    ReasonSuccess,
@@ -22,13 +22,13 @@ func TestConnackEncodeAndDecode(t *testing.T) {
 	// 解码
 	resultPacket, _, err := codec.DecodeFrame(packetBytes, 4)
 	assert.NoError(t, err)
-	resultConnackPacket, ok := resultPacket.(*ConnackPacket)
+	resultConnAckPacket, ok := resultPacket.(*ConnackPacket)
 	assert.Equal(t, true, ok)
 
 	// 正确与否比较
-	assert.Equal(t, packet.TimeDiff, resultConnackPacket.TimeDiff)
-	assert.Equal(t, packet.ReasonCode, resultConnackPacket.ReasonCode)
-	assert.Equal(t, packet.ServerKey, resultConnackPacket.ServerKey)
-	assert.Equal(t, packet.Salt, resultConnackPacket.Salt)
-	assert.Equal(t, packet.ServerVersion, resultConnackPacket.ServerVersion)
+	assert.Equal(t, packet.TimeDiff, resultConnAckPacket.TimeDiff)
+	assert.Equal(t, packet.ReasonCode, resultConnAckPacket.ReasonCode)
+	assert.Equal(t, packet.ServerKey, resultConnAckPacket.ServerKey)
+	assert.Equal(t, packet.Salt, resultConnAckPacket.Salt)
+	assert.Equal(t, packet.ServerVersion, resultConnAckPacket.ServerVersion)
 }

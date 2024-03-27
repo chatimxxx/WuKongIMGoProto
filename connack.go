@@ -24,7 +24,7 @@ func (c ConnackPacket) String() string {
 	return fmt.Sprintf("TimeDiff: %d ReasonCode:%s", c.TimeDiff, c.ReasonCode.String())
 }
 
-func encodeConnack(connack *ConnackPacket, enc *Encoder, version uint8) error {
+func encodeConnAck(connack *ConnackPacket, enc *Encoder, version uint8) error {
 	if connack.GetHasServerVersion() {
 		enc.WriteUint8(connack.ServerVersion)
 	}
@@ -35,7 +35,7 @@ func encodeConnack(connack *ConnackPacket, enc *Encoder, version uint8) error {
 	return nil
 }
 
-func encodeConnackSize(packet *ConnackPacket, version uint8) int {
+func encodeConnAckSize(packet *ConnackPacket, version uint8) int {
 	size := 0
 	if packet.GetHasServerVersion() {
 		size += VersionByteSize
@@ -47,34 +47,34 @@ func encodeConnackSize(packet *ConnackPacket, version uint8) int {
 	return size
 }
 
-func decodeConnack(frame Frame, data []byte, version uint8) (Frame, error) {
+func decodeConnAck(frame Frame, data []byte, version uint8) (Frame, error) {
 	dec := NewDecoder(data)
-	connackPacket := &ConnackPacket{}
-	connackPacket.Framer = frame.(Framer)
+	connAckPacket := &ConnackPacket{}
+	connAckPacket.Framer = frame.(Framer)
 
 	var err error
 
 	if frame.GetHasServerVersion() {
-		if connackPacket.ServerVersion, err = dec.Uint8(); err != nil {
+		if connAckPacket.ServerVersion, err = dec.Uint8(); err != nil {
 			return nil, errors.Wrap(err, "解码version失败！")
 		}
 	}
 
-	if connackPacket.TimeDiff, err = dec.Int64(); err != nil {
+	if connAckPacket.TimeDiff, err = dec.Int64(); err != nil {
 		return nil, errors.Wrap(err, "解码TimeDiff失败！")
 	}
 	var reasonCode uint8
 	if reasonCode, err = dec.Uint8(); err != nil {
 		return nil, errors.Wrap(err, "解码ReasonCode失败！")
 	}
-	connackPacket.ReasonCode = ReasonCode(reasonCode)
+	connAckPacket.ReasonCode = ReasonCode(reasonCode)
 
-	if connackPacket.ServerKey, err = dec.String(); err != nil {
+	if connAckPacket.ServerKey, err = dec.String(); err != nil {
 		return nil, errors.Wrap(err, "解码ServerKey失败！")
 	}
-	if connackPacket.Salt, err = dec.String(); err != nil {
+	if connAckPacket.Salt, err = dec.String(); err != nil {
 		return nil, errors.Wrap(err, "解码Salt失败！")
 	}
 
-	return connackPacket, nil
+	return connAckPacket, nil
 }

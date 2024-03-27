@@ -45,11 +45,11 @@ type PacketEncodeFunc func(frame Frame, version uint8) ([]byte, error)
 
 var packetDecodeMap = map[FrameType]PacketDecodeFunc{
 	CONNECT:    decodeConnect,
-	CONNACK:    decodeConnack,
+	CONNACK:    decodeConnAck,
 	SEND:       decodeSend,
 	SENDACK:    decodeSendack,
 	RECV:       decodeRecv,
-	RECVACK:    decodeRecvack,
+	RECVACK:    decodeRecvAck,
 	DISCONNECT: decodeDisConnect,
 	SUB:        decodeSub,
 	SUBACK:     decodeSuback,
@@ -57,11 +57,11 @@ var packetDecodeMap = map[FrameType]PacketDecodeFunc{
 
 // var packetEncodeMap = map[PacketType]PacketEncodeFunc{
 // 	CONNECT:    encodeConnect,
-// 	CONNACK:    encodeConnack,
+// 	CONNACK:    encodeConnAck,
 // 	SEND:       encodeSend,
-// 	SENDACK:    encodeSendack,
+// 	SENDACK:    encodeSendAck,
 // 	RECV:       encodeRecv,
-// 	RECVACK:    encodeRecvack,
+// 	RECVACK:    encodeRecvAck,
 // 	DISCONNECT: encodeDisConnect,
 // }
 
@@ -160,24 +160,24 @@ func (l *WKProto) EncodeFrame(frame Frame, version uint8) ([]byte, error) {
 		err = encodeConnect(packet, enc, version)
 	case CONNACK:
 		packet := frame.(*ConnackPacket)
-		l.encodeFrame(packet, enc, uint32(encodeConnackSize(packet, version)))
-		err = encodeConnack(packet, enc, version)
+		l.encodeFrame(packet, enc, uint32(encodeConnAckSize(packet, version)))
+		err = encodeConnAck(packet, enc, version)
 	case SEND:
 		packet := frame.(*SendPacket)
 		l.encodeFrame(packet, enc, uint32(encodeSendSize(packet, version)))
 		err = encodeSend(packet, enc, version)
 	case SENDACK:
-		packet := frame.(*SendackPacket)
+		packet := frame.(*SendAckPacket)
 		l.encodeFrame(packet, enc, uint32(encodeSendackSize(packet, version)))
-		err = encodeSendack(packet, enc, version)
+		err = encodeSendAck(packet, enc, version)
 	case RECV:
 		packet := frame.(*RecvPacket)
 		l.encodeFrame(packet, enc, uint32(encodeRecvSize(packet, version)))
 		err = encodeRecv(packet, enc, version)
 	case RECVACK:
-		packet := frame.(*RecvackPacket)
-		l.encodeFrame(packet, enc, uint32(encodeRecvackSize(packet, version)))
-		err = encodeRecvack(packet, enc, version)
+		packet := frame.(*RecvAckPacket)
+		l.encodeFrame(packet, enc, uint32(encodeRecvAckSize(packet, version)))
+		err = encodeRecvAck(packet, enc, version)
 	case DISCONNECT:
 		packet := frame.(*DisconnectPacket)
 		l.encodeFrame(packet, enc, uint32(encodeDisConnectSize(packet, version)))
@@ -187,7 +187,7 @@ func (l *WKProto) EncodeFrame(frame Frame, version uint8) ([]byte, error) {
 		l.encodeFrame(packet, enc, uint32(encodeSubSize(packet, version)))
 		err = encodeSub(packet, enc, version)
 	case SUBACK:
-		packet := frame.(*SubackPacket)
+		packet := frame.(*SubAckPacket)
 		l.encodeFrame(packet, enc, uint32(encodeSubackSize(packet, version)))
 		err = encodeSuback(packet, enc, version)
 	}

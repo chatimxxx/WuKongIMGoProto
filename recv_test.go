@@ -48,5 +48,5 @@ func TestRecvEncodeAndDecode(t *testing.T) {
 
 	assert.Equal(t, packet.Framer.GetNoPersist(), resultRecvPacket.Framer.GetNoPersist())
 	assert.Equal(t, packet.Framer.GetRedDot(), resultRecvPacket.Framer.GetRedDot())
-	assert.Equal(t, packet.Framer.GetsyncOnce(), resultRecvPacket.Framer.GetsyncOnce())
+	assert.Equal(t, packet.Framer.GetSyncOnce(), resultRecvPacket.Framer.GetSyncOnce())
 }

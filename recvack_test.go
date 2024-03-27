@@ -6,9 +6,9 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestRecvackEncodeAndDecode(t *testing.T) {
+func TestRecvAckEncodeAndDecode(t *testing.T) {
 
-	packet := &RecvackPacket{
+	packet := &RecvAckPacket{
 		Framer: Framer{
 			RedDot: true,
 		},
@@ -24,11 +24,11 @@ func TestRecvackEncodeAndDecode(t *testing.T) {
 	// 解码
 	resultPacket, _, err := codec.DecodeFrame(packetBytes, 1)
 	assert.NoError(t, err)
-	resultRecvackPacket, ok := resultPacket.(*RecvackPacket)
+	resultRecvAckPacket, ok := resultPacket.(*RecvAckPacket)
 	assert.Equal(t, true, ok)
 
 	// 比较
-	assert.Equal(t, packet.MessageID, resultRecvackPacket.MessageID)
-	assert.Equal(t, packet.MessageSeq, resultRecvackPacket.MessageSeq)
-	assert.Equal(t, packet.RedDot, resultRecvackPacket.RedDot)
+	assert.Equal(t, packet.MessageID, resultRecvAckPacket.MessageID)
+	assert.Equal(t, packet.MessageSeq, resultRecvAckPacket.MessageSeq)
+	assert.Equal(t, packet.RedDot, resultRecvAckPacket.RedDot)
 }

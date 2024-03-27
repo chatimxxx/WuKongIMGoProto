@@ -17,7 +17,7 @@ type Framer struct {
 
 // ToFixHeaderUint8 ToFixHeaderUint8
 func ToFixHeaderUint8(f Frame) uint8 {
-	typeAndFlags := encodeBool(f.GetDUP())<<3 | encodeBool(f.GetsyncOnce())<<2 | encodeBool(f.GetRedDot())<<1 | encodeBool(f.GetNoPersist())
+	typeAndFlags := encodeBool(f.GetDUP())<<3 | encodeBool(f.GetSyncOnce())<<2 | encodeBool(f.GetRedDot())<<1 | encodeBool(f.GetNoPersist())
 	if f.GetFrameType() == CONNACK {
 		typeAndFlags = encodeBool(f.GetHasServerVersion())
 	}
@@ -63,8 +63,8 @@ func (f Framer) GetRedDot() bool {
 	return f.RedDot
 }
 
-// GetsyncOnce 是否只被同步一次
-func (f Framer) GetsyncOnce() bool {
+// GetSyncOnce 是否只被同步一次
+func (f Framer) GetSyncOnce() bool {
 	return f.SyncOnce
 }
 
@@ -139,6 +139,8 @@ func (p FrameType) String() string {
 		return "SUB"
 	case SUBACK:
 		return "SUBACK"
+	default:
+		break
 	}
 	return fmt.Sprintf("UNKNOWN[%d]", p)
 }
@@ -232,6 +234,8 @@ func (r ReasonCode) String() string {
 		return "ReasonClientKeyIsEmpty"
 	case ReasonRateLimit:
 		return "ReasonRateLimit"
+	default:
+		break
 	}
 	return fmt.Sprintf("UNKNOWN[%d]", r)
 }
@@ -288,6 +292,8 @@ func (r DeviceFlag) String() string {
 		return "WEB"
 	case SYSTEM:
 		return "SYSTEM"
+	default:
+		break
 	}
 	return fmt.Sprintf("%d", r)
 }
@@ -300,8 +306,8 @@ type Frame interface {
 	GetNoPersist() bool
 	// GetRedDot 是否显示红点
 	GetRedDot() bool
-	// GetsyncOnce 是否只被同步一次
-	GetsyncOnce() bool
+	// GetSyncOnce 是否只被同步一次
+	GetSyncOnce() bool
 	// 是否是重发的消息
 	GetDUP() bool
 	GetFrameSize() int64       // 总个frame的大小（不参与编码解码）

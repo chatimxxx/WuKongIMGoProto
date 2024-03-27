@@ -6,8 +6,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestSuback(t *testing.T) {
-	packet := &SubackPacket{
+func TestSubAck(t *testing.T) {
+	packet := &SubAckPacket{
 		ChannelID:   "123456",
 		ChannelType: 1,
 		Action:      Subscribe,
@@ -22,7 +22,7 @@ func TestSuback(t *testing.T) {
 	// 解码
 	resultPacket, _, err := codec.DecodeFrame(packetBytes, 1)
 	assert.NoError(t, err)
-	resultSubackPacket, ok := resultPacket.(*SubackPacket)
+	resultSubackPacket, ok := resultPacket.(*SubAckPacket)
 	assert.Equal(t, true, ok)
 
 	// 比较

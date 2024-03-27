@@ -8,7 +8,7 @@ import (
 
 func TestSendackEncodeAndDecode(t *testing.T) {
 
-	packet := &SendackPacket{
+	packet := &SendAckPacket{
 		ClientSeq:  234,
 		MessageSeq: 2,
 		MessageID:  1234,
@@ -22,12 +22,12 @@ func TestSendackEncodeAndDecode(t *testing.T) {
 	// 解码
 	resultPacket, _, err := codec.DecodeFrame(packetBytes, 1)
 	assert.NoError(t, err)
-	resultSendackPacket, ok := resultPacket.(*SendackPacket)
+	resultSendAckPacket, ok := resultPacket.(*SendAckPacket)
 	assert.Equal(t, true, ok)
 
 	// 比较
-	assert.Equal(t, packet.ClientSeq, resultSendackPacket.ClientSeq)
-	assert.Equal(t, packet.MessageSeq, resultSendackPacket.MessageSeq)
-	assert.Equal(t, packet.MessageID, resultSendackPacket.MessageID)
-	assert.Equal(t, packet.ReasonCode, resultSendackPacket.ReasonCode)
+	assert.Equal(t, packet.ClientSeq, resultSendAckPacket.ClientSeq)
+	assert.Equal(t, packet.MessageSeq, resultSendAckPacket.MessageSeq)
+	assert.Equal(t, packet.MessageID, resultSendAckPacket.MessageID)
+	assert.Equal(t, packet.ReasonCode, resultSendAckPacket.ReasonCode)
 }

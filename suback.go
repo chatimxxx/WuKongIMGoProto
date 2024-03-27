@@ -13,7 +13,7 @@ func (a Action) Uint8() uint8 {
 	return uint8(a)
 }
 
-type SubackPacket struct {
+type SubAckPacket struct {
 	Framer
 	SubNo       string     // 订阅编号
 	ChannelID   string     // 频道ID（如果是个人频道ChannelId为个人的UID）
@@ -23,14 +23,14 @@ type SubackPacket struct {
 }
 
 // GetPacketType 包类型
-func (s *SubackPacket) GetFrameType() FrameType {
+func (s *SubAckPacket) GetFrameType() FrameType {
 	return SUBACK
 }
 
 func decodeSuback(frame Frame, data []byte, version uint8) (Frame, error) {
 	dec := NewDecoder(data)
 
-	subackPacket := &SubackPacket{}
+	subackPacket := &SubAckPacket{}
 	subackPacket.Framer = frame.(Framer)
 
 	var err error
@@ -64,7 +64,7 @@ func decodeSuback(frame Frame, data []byte, version uint8) (Frame, error) {
 }
 
 func encodeSuback(frame Frame, enc *Encoder, version uint8) error {
-	subackPacket := frame.(*SubackPacket)
+	subackPacket := frame.(*SubAckPacket)
 	// 客户端消息编号
 	enc.WriteString(subackPacket.SubNo)
 	// 频道ID
@@ -79,7 +79,7 @@ func encodeSuback(frame Frame, enc *Encoder, version uint8) error {
 }
 
 func encodeSubackSize(frame Frame, version uint8) int {
-	subPacket := frame.(*SubackPacket)
+	subPacket := frame.(*SubAckPacket)
 	var size = 0
 	size += (len(subPacket.SubNo) + StringFixLenByteSize)
 	size += (len(subPacket.ChannelID) + StringFixLenByteSize)
