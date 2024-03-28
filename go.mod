@@ -1,4 +1,4 @@
-module github.com/chatimxxx/WuKongIMGoProto
+module github.com/xochat/xochat_im_go_proto
 
 go 1.18
 
