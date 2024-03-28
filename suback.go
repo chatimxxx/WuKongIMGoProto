@@ -1,4 +1,4 @@
-package wkproto
+package xoproto
 
 import "github.com/pkg/errors"
 

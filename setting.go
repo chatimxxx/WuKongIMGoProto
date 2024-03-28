@@ -1,4 +1,4 @@
-package wkproto
+package xoproto
 
 type Setting uint8
 

@@ -1,4 +1,4 @@
-package wkproto
+package xoproto
 
 import (
 	"fmt"
@@ -21,8 +21,8 @@ type Protocol interface {
 	EncodeFrame(packet Frame, version uint8) ([]byte, error)
 }
 
-// WKroto 悟空IM协议对象
-type WKProto struct {
+// XOroto 悟空IM协议对象
+type XOProto struct {
 	sync.RWMutex
 }
 
@@ -33,8 +33,8 @@ const LatestVersion = 3
 const MaxRemaingLength uint32 = 1024 * 1024
 
 // New 创建wukong协议对象
-func New() *WKProto {
-	return &WKProto{}
+func New() *XOProto {
+	return &XOProto{}
 }
 
 // PacketDecodeFunc 包解码函数
@@ -66,7 +66,7 @@ var packetDecodeMap = map[FrameType]PacketDecodeFunc{
 // }
 
 // DecodePacketWithConn 解码包
-func (l *WKProto) DecodePacketWithConn(conn io.Reader, version uint8) (Frame, error) {
+func (l *XOProto) DecodePacketWithConn(conn io.Reader, version uint8) (Frame, error) {
 	framer, err := l.decodeFramerWithConn(conn)
 	if err != nil {
 		return nil, err
@@ -102,7 +102,7 @@ func (l *WKProto) DecodePacketWithConn(conn io.Reader, version uint8) (Frame, er
 }
 
 // DecodePacket 解码包
-func (l *WKProto) DecodeFrame(data []byte, version uint8) (Frame, int, error) {
+func (l *XOProto) DecodeFrame(data []byte, version uint8) (Frame, int, error) {
 	framer, remainingLengthLength, err := l.decodeFramer(data)
 	if err != nil {
 		return nil, 0, nil
@@ -143,7 +143,7 @@ func (l *WKProto) DecodeFrame(data []byte, version uint8) (Frame, int, error) {
 }
 
 // EncodePacket 编码包
-func (l *WKProto) EncodeFrame(frame Frame, version uint8) ([]byte, error) {
+func (l *XOProto) EncodeFrame(frame Frame, version uint8) ([]byte, error) {
 	frameType := frame.GetFrameType()
 
 	if frameType == PING || frameType == PONG {
@@ -241,14 +241,14 @@ func (l *WKProto) EncodeFrame(frame Frame, version uint8) ([]byte, error) {
 	return enc.Bytes(), nil
 }
 
-func (l *WKProto) encodeFrame(f Frame, enc *Encoder, remainingLength uint32) {
+func (l *XOProto) encodeFrame(f Frame, enc *Encoder, remainingLength uint32) {
 
 	_ = enc.WriteByte(ToFixHeaderUint8(f))
 
 	encodeVariable2(remainingLength, enc)
 }
 
-func (l *WKProto) encodeFramer(f Frame, remainingLength uint32) ([]byte, error) {
+func (l *XOProto) encodeFramer(f Frame, remainingLength uint32) ([]byte, error) {
 
 	if f.GetFrameType() == PING || f.GetFrameType() == PONG {
 		return []byte{byte(int(f.GetFrameType()<<4) | 0)}, nil
@@ -264,7 +264,7 @@ func (l *WKProto) encodeFramer(f Frame, remainingLength uint32) ([]byte, error) 
 
 	return append(header, varHeader...), nil
 }
-func (l *WKProto) decodeFramer(data []byte) (Framer, int, error) {
+func (l *XOProto) decodeFramer(data []byte) (Framer, int, error) {
 	typeAndFlags := data[0]
 	p := FramerFromUint8(typeAndFlags)
 	var remainingLengthLength uint32 = 0 // 剩余长度的长度
@@ -282,7 +282,7 @@ func (l *WKProto) decodeFramer(data []byte) (Framer, int, error) {
 	return p, int(remainingLengthLength), nil
 }
 
-func (l *WKProto) decodeFramerWithConn(conn io.Reader) (Framer, error) {
+func (l *XOProto) decodeFramerWithConn(conn io.Reader) (Framer, error) {
 	b := make([]byte, 1)
 	_, err := io.ReadFull(conn, b)
 	if err != nil {

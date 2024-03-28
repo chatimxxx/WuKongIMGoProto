@@ -1,4 +1,4 @@
-package wkproto
+package xoproto
 
 // PongPacket pong包对ping的回应
 type PongPacket struct {
