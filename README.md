@@ -20,3 +20,9 @@ import  (
 ## 3. 协议格式
 
 [协议文档](https://githubim.com/guide/proto.html)
+
+
+## 4. 提交一个版本
+```cmd
+git tag v1.0.2-$(git rev-parse HEAD)
+```
